@@ -7,7 +7,8 @@ const Signup = () => {
     const[email,setEmail]=useState('')
     const[password,setPassword]=useState('')
 
-    function handleSubmit(){
+    function handleSubmit(e){
+        e.preventDefault()
         axios.post('http://localhost:3000/register',{name,email,password})
         .then(result=>console.log(result))
         .catch(e=>console.log(e))
@@ -70,7 +71,7 @@ const Signup = () => {
           <button
             type="submit"
             className="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-2 px-4 rounded-md shadow-sm transition duration-200"
-            onClick={handleSubmit()}
+            onClick={handleSubmit}
           >
             Sign Up
           </button>

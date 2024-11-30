@@ -1,7 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const Login = () => {
+  
+  const[password,setPassword]=useState('')
+  const[email,setEmail]=useState('')
+  const navigate=useNavigate()
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    axios.post("http://localhost:3000/login",{email,password})
+    .then(result=>{
+      console.log(result)
+      if(result.data=="sucess"){
+        navigate('/home')
+        
+
+        
+
+
+      }
+      
+    })
+    .catch((e)=>console.log(e))
+    
+  
+  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 to-teal-500">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
@@ -21,6 +46,7 @@ const Login = () => {
               id="email"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               placeholder="you@example.com"
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -35,6 +61,7 @@ const Login = () => {
               id="password"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
               placeholder="********"
+              onChange={(e)=>setPassword(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between mb-4">
@@ -55,6 +82,7 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-md shadow-sm transition duration-200"
+            onClick={handleSubmit}
           >
             Login
           </button>

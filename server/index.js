@@ -9,9 +9,7 @@ dotenv.config();
 
 const app=express();
 app.use(cors());
-app.use(cors({
-    origin: '*'
-}));
+
 
 
 app.use(express.json())
@@ -30,12 +28,13 @@ main()
 
 app.post('/register',async(req,res)=>{
     const{name,email,password}=req.body;
+    const hashedPassword=await bcrypt.hash(password,4)
     
 
     await EmployeeModel.create({
         name:name,
         email:email,
-        password:password
+        password:hashedPassword
 
     }).then(employee=>res.json(employee)).catch(e=>res.json(e))
     
@@ -43,21 +42,27 @@ app.post('/register',async(req,res)=>{
 })
 app.post('/login',async(req,res)=>{
     const{email,password}=req.body;
-    const emp=await EmployeeModel.findOne({
-        email:email,
-        
-    })
+    try {
+        // Find user by email
+        const user = await EmployeeModel.findOne({ email });
+        if (!user) {
+          return res.status(404).json({ message: 'Invalid email or password' });
+        }
     
-    if(emp){
-        if(emp.password==password){
-            res.json("sucess")
+        // Compare password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+          return res.status(401).json({ message: 'Invalid email or password' });
         }
-        else{
-            res.json("invalid")
+        if(user&&passwordMatch){
+            res.status(200).send("sucess")
+                
         }
-    }
-    else{
-        res.json("the password is wrong")
+    
+    
+    }   
+    catch(e){
+        res.json(e)
     }
      
 })

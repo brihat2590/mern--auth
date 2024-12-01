@@ -10,17 +10,19 @@ const Login = () => {
   const navigate=useNavigate()
   const handleSubmit=(e)=>{
     e.preventDefault()
-    axios.post("http://localhost:3000/login",{email,password})
+    axios.post('http://localhost:3000/login',{email,password})
     .then(result=>{
-      console.log(result)
-      if(result.data=="sucess"){
-        navigate('/home')
+        console.log(result)
+        if(result.data=="sucess"){
+          navigate('/home')
+        }
         
 
         
 
 
-      }
+      
+    
       
     })
     .catch((e)=>console.log(e))

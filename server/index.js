@@ -4,6 +4,7 @@ import  EmployeeModel  from "./models/EmployeeModel.js"
 import cors from "cors"
 import dotenv from 'dotenv';
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 dotenv.config();
 
@@ -55,6 +56,11 @@ app.post('/login',async(req,res)=>{
           return res.status(401).json({ message: 'Invalid email or password' });
         }
         if(user&&passwordMatch){
+            const token=jwt.sign({email:user.email},"jwt-secret-key",{expiresIn:"1d"})
+            res.cookie("token",token)
+
+                
+        
             res.status(200).send("sucess")
                 
         }

@@ -1,6 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from "axios"
+
 
 const Home = () => {
+  axios.defaults.withCredentials=true;
+  const navigate=useNavigate()
+  useEffect(()=>{
+    axios.get('http://localhost:3000/home')
+    .then(result=>{
+      console.log(result)
+      if(result.data!=="sucess"){
+        // navigate('/login')
+      }
+
+    })
+    .catch(err=>console.log(err))
+        
+        
+
+
+  },[])
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}

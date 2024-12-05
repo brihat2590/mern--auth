@@ -8,12 +8,14 @@ const Login = () => {
   const[password,setPassword]=useState('')
   const[email,setEmail]=useState('')
   const navigate=useNavigate()
+
+  axios.defaults.withCredentials=true;
   const handleSubmit=(e)=>{
     e.preventDefault()
     axios.post('http://localhost:3000/login',{email,password})
     .then(result=>{
         console.log(result)
-        if(result.data=="sucess"){
+        if(result.data=="success"){
           navigate('/home')
         }
         
